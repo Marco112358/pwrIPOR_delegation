@@ -24,16 +24,22 @@ ip_usdt_stk = 2374886.0
 pwripor_stk_usdt = 49054.0
 ip_dai_stk = 2139505.0
 pwripor_stk_dai = 43283.0
-ipor_prc = fn.get_price('ipor', 'usd')
+ipor_prc = 1.99 # fn.get_price('ipor', 'usd')
 
 
 def objective(x, sign=-1.0):
-    user_usdc_apr = fn.staking_pool(ip_usdc_stk, pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
-                                    tkn_per_block, blocks_per_yr, user_ip_usdc, user_pwripor * x[0])
-    user_usdt_apr = fn.staking_pool(ip_usdt_stk, pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
-                                    tkn_per_block, blocks_per_yr, user_ip_usdt, user_pwripor * x[1])
-    user_dai_apr = fn.staking_pool(ip_dai_stk, pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
-                                   tkn_per_block, blocks_per_yr, user_ip_dai, user_pwripor * x[2])
+    user_pwripor_usdc = user_pwripor * x[0]
+    user_pwripor_usdt = user_pwripor * x[1]
+    user_pwripor_dai = user_pwripor * x[2]
+    new_pwripor_stk_usdc = pwripor_stk_usdc + user_pwripor_usdc
+    new_pwripor_stk_usdt = pwripor_stk_usdt + user_pwripor_usdt
+    new_pwripor_stk_dai = pwripor_stk_dai + user_pwripor_dai
+    user_usdc_apr = fn.staking_pool(ip_usdc_stk, new_pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base,
+                                    horz_shft, tkn_per_block, blocks_per_yr, user_ip_usdc, user_pwripor_usdc)
+    user_usdt_apr = fn.staking_pool(ip_usdt_stk, new_pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base,
+                                    horz_shft, tkn_per_block, blocks_per_yr, user_ip_usdt, user_pwripor_usdt)
+    user_dai_apr = fn.staking_pool(ip_dai_stk, new_pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
+                                   tkn_per_block, blocks_per_yr, user_ip_dai, user_pwripor_dai)
     return sign * np.sum([user_usdc_apr, user_usdt_apr, user_dai_apr])
 
 
