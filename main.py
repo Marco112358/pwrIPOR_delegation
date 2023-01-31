@@ -16,15 +16,23 @@ log_base = 2.0
 horz_shft = 0.5
 tkn_per_block = 0.5
 blocks_per_yr = 365 * 24 * 60 * 60 / 12
+lm_stats_url = 'https://api.ipor.io/monitor/liquidity-mining-statistics'
+tkns = ['ipUSDC', 'ipUSDT', 'ipDAI']
 
 ## NEEDED API INPUTS ##
-ip_usdc_stk = 2542989.0
-pwripor_stk_usdc = 57358.0
-ip_usdt_stk = 2374886.0
-pwripor_stk_usdt = 49054.0
-ip_dai_stk = 2139505.0
-pwripor_stk_dai = 43283.0
-ipor_prc = 1.99 # fn.get_price('ipor', 'usd')
+pools_df = fn.data_import(lm_stats_url)
+stkd_amts = []
+deleg_amts = []
+for i, tkn in enumerate(tkns):
+    stkd_amts.append(float(pools_df.loc[tkn, 'stakedIpTokenAmount']))
+    deleg_amts.append(float(pools_df.loc[tkn, 'delegatedPwIporAmount']))
+ipusdc_stk = stkd_amts[0]
+pwripor_stk_usdc = deleg_amts[0]
+ipusdt_stk = stkd_amts[1]
+pwripor_stk_usdt = deleg_amts[1]
+ipdai_stk = stkd_amts[2]
+pwripor_stk_dai = deleg_amts[2]
+ipor_prc = fn.get_price('ipor', 'usd')
 
 
 def objective(x, sign=-1.0):
@@ -34,11 +42,11 @@ def objective(x, sign=-1.0):
     new_pwripor_stk_usdc = pwripor_stk_usdc + user_pwripor_usdc
     new_pwripor_stk_usdt = pwripor_stk_usdt + user_pwripor_usdt
     new_pwripor_stk_dai = pwripor_stk_dai + user_pwripor_dai
-    user_usdc_apr = fn.staking_pool(ip_usdc_stk, new_pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base,
+    user_usdc_apr = fn.staking_pool(ipusdc_stk, new_pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base,
                                     horz_shft, tkn_per_block, blocks_per_yr, user_ip_usdc, user_pwripor_usdc)
-    user_usdt_apr = fn.staking_pool(ip_usdt_stk, new_pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base,
+    user_usdt_apr = fn.staking_pool(ipusdt_stk, new_pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base,
                                     horz_shft, tkn_per_block, blocks_per_yr, user_ip_usdt, user_pwripor_usdt)
-    user_dai_apr = fn.staking_pool(ip_dai_stk, new_pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
+    user_dai_apr = fn.staking_pool(ipdai_stk, new_pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
                                    tkn_per_block, blocks_per_yr, user_ip_dai, user_pwripor_dai)
     return sign * np.sum([user_usdc_apr, user_usdt_apr, user_dai_apr])
 
@@ -62,13 +70,13 @@ max_delegation_strat = sol.x
 ## Running final output ##
 user_delegation = pd.DataFrame(index=['pct'], columns=['USDC', 'USDT', 'DAI'])
 user_delegation.iloc[0, :] = max_delegation_strat
-user_usdc_apr = fn.staking_pool(ip_usdc_stk, pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
+user_usdc_apr = fn.staking_pool(ipusdc_stk, pwripor_stk_usdc, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
                                 tkn_per_block, blocks_per_yr, user_ip_usdc,
                                 user_pwripor * user_delegation.loc[:, 'USDC'][0])
-user_usdt_apr = fn.staking_pool(ip_usdt_stk, pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
+user_usdt_apr = fn.staking_pool(ipusdt_stk, pwripor_stk_usdt, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
                                 tkn_per_block, blocks_per_yr, user_ip_usdt,
                                 user_pwripor * user_delegation.loc[:, 'USDT'][0])
-user_dai_apr = fn.staking_pool(ip_dai_stk, pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
+user_dai_apr = fn.staking_pool(ipdai_stk, pwripor_stk_dai, ipor_prc, vrt_shft, base_boost, log_base, horz_shft,
                                tkn_per_block, blocks_per_yr, user_ip_dai,
                                user_pwripor * user_delegation.loc[:, 'DAI'][0])
 

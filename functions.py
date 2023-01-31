@@ -2,6 +2,7 @@ from pycoingecko import CoinGeckoAPI
 import pandas as pd
 from datetime import datetime
 import math
+import requests
 
 
 def cg_pull(ticker='btc', curr='usd', days='max', intv='daily'):
@@ -34,4 +35,11 @@ def staking_pool(ip_tkn_stk=None, pwripor_stk=None, ipor_prc=None, vrt_shft=1.0,
     return user_apr_usd
 
 
-
+def data_import(url='https://api.ipor.io/monitor/liquidity-mining-statistics'):
+    lm_stats_dict = requests.get(url).json()
+    pools_list = []
+    for pool_info in lm_stats_dict['pools']:
+        pools_list.append([pool_info['ipToken'], pool_info['delegatedPwIporAmount'], pool_info['stakedIpTokenAmount']])
+    pools_df = pd.DataFrame(data=pools_list, columns=['ipToken', 'delegatedPwIporAmount', 'stakedIpTokenAmount'])
+    pools_df = pools_df.set_index('ipToken', drop=True)
+    return pools_df
