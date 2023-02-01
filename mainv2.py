@@ -7,15 +7,15 @@ import time
 start_time = time.time()
 
 ## NEED TO API THESE EXCHANGE RATES ##
-ipusdc_prc = 1.0383
-ipusdt_prc = 1.0431
+ipusdc_prc = 1.0384
+ipusdt_prc = 1.0432
 ipdai_prc = 1.0406
 ## USER Parameters ##
-user_ipusdc = 2000.0
-user_ipusdt = 0.0
-user_ipdai = 500.0
-user_pwripor = 100.0
-change = 100
+user_ipusdc = 0.01
+user_ipusdt = 0.01
+user_ipdai = 0.01
+user_pwripor = 0.01
+change = 1000
 
 ip_prcs = [ipusdc_prc, ipusdt_prc, ipdai_prc]  # Will need to update if add new tokens
 user_ip_tkns = [user_ipusdc, user_ipusdt, user_ipdai]  # Will need to update if add new tokens
@@ -127,20 +127,20 @@ user_iptkns_chng.iloc[0, :] = np.subtract(new_ip_tkns, user_ip_tkns)
 iptokn_cost = np.sum(np.multiply(np.subtract(new_ip_tkns, user_ip_tkns), ip_prcs))
 ipor_cost = np.multiply(np.subtract(new_pw_tkn, user_pwripor), ipor_prc)
 total_cost = iptokn_cost + ipor_cost
-print('You should buy/sell ' + str((new_pw_tkn - user_pwripor)) + ' more pwrIPOR')
-print('For a total of ' + str(new_pw_tkn) + ' pwrIPOR')
-print('Cost to purchase these pwrIPOR is ' + str(ipor_cost))
+print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
+print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
+print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
 print('You should buy/sell the following amounts of ipTokens')
 print(user_iptkns_chng)
 print('For a total amout of ipTkns')
 print(user_iptkns_df)
-print('Cost to purchase these ipTokens is ' + str(iptokn_cost))
+print('Cost to purchase these ipTokens is ' + str(round(iptokn_cost, 2)))
 print('You should allocate your pwrIPOR tokens using this delegation strategy:')
 print(user_delegation)
 print('This would give you the following expected aprs in USD')
 print(user_aprs)
 print('With the total apr in USD across all staking pools of:')
-print(user_tot_aprs)
-print('This would cost a total of ' + str(total_cost))
-print('This optimization took ' + str(time.time() - start_time) + ' seconds to run')
+print(round(user_tot_aprs, 2))
+print('This would cost a total of ' + str(round(total_cost, 2)))
+print('This optimization took ' + str(round(time.time() - start_time, 2)) + ' seconds to run')
 
