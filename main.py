@@ -4,12 +4,13 @@ import numpy as np
 from scipy.optimize import minimize
 
 ## USER Parameters ##
-user_ip_usdc = 2000.0
-user_ip_usdt = 3000.0
-user_ip_dai = 1500.0
+user_ipusdc = 2000.0
+user_ipusdt = 0.0
+user_ipdai = 0.0
 user_pwripor = 1000.0
 
-user_ip_tkns = [user_ip_usdc, user_ip_usdt, user_ip_dai]
+user_ip_tkns = [user_ipusdc, user_ipusdt, user_ipdai]  # Will need to update if add new tokens
+no_tkns = len(user_ip_tkns)
 
 ## Global Parameters ##
 vrt_shft = 1.0
@@ -35,7 +36,7 @@ def objective(x, sign=-1.0):
     user_pwripor_list = np.multiply(x, user_pwripor)
     new_pwripor_list = deleg_amts + user_pwripor_list
     user_apr = []
-    for t in np.arange(0, len(tkns)):
+    for t in np.arange(0, no_tkns):
         if user_ip_tkns[t] == 0:
             apr = 0.0
         else:
@@ -59,24 +60,23 @@ con1 = {'type': 'ineq', 'fun': constraint1}
 cons = [con1]
 sol = minimize(objective, x0, method='SLSQP', bounds=bnds, constraints=cons)
 
-max_delegation_strat = sol.x
 
 ## Running final output ##
+max_delegation_strat = sol.x
 user_pwripor_list = np.multiply(max_delegation_strat, user_pwripor)
 new_pwripor_list = deleg_amts + user_pwripor_list
 user_apr_list = []
-for t in np.arange(0, len(tkns)):
+for t in np.arange(0, no_tkns):
     apr = fn.staking_pool(stkd_amts[t], new_pwripor_list[t], ipor_prc, vrt_shft, base_boost, log_base,
                           horz_shft, tkn_per_block, blocks_per_yr, user_ip_tkns[t], user_pwripor_list[t])
     user_apr_list.append(apr)
 
-## Format the Tables for output
+## Format the Tables for output and print
 user_delegation = pd.DataFrame(index=['pct'], columns=['USDC', 'USDT', 'DAI'])
 user_delegation.iloc[0, :] = max_delegation_strat
 user_aprs = pd.DataFrame(index=['pct'], columns=['USDC', 'USDT', 'DAI'])
 user_aprs.iloc[0, :] = user_apr_list
 user_tot_aprs = np.sum(user_aprs, axis=1)[0]
-
 print('You should allocate your pwrIPOR tokens using this delegation strategy:')
 print(user_delegation)
 print('This would give you the following expected aprs in USD')
