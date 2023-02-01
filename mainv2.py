@@ -2,6 +2,9 @@ import functions as fn
 import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
+import time
+
+start_time = time.time()
 
 ## NEED TO API THESE EXCHANGE RATES ##
 ipusdc_prc = 1.0383
@@ -136,3 +139,5 @@ print(user_aprs)
 print('With the total apr in USD across all staking pools of:')
 print(user_tot_aprs)
 print('This would cost a total of ' + str(cost))
+print('This optimization took ' + str(time.time() - start_time) + ' seconds to run')
+
