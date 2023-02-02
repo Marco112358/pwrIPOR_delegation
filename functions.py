@@ -29,7 +29,7 @@ def staking_pool(ip_tkn_stk=None, pwripor_stk=None, ipor_prc=None, vrt_shft=1.0,
     user_pwrup = vrt_shft + base_boost + math.log(horz_shft + (user_pwripor / user_ip_tkn), log_base)
     pool_base_pwrup = vrt_shft + base_boost + math.log(horz_shft + (pwripor_stk / ip_tkn_stk), log_base)
     base_pool_pwrup = pool_base_pwrup * ip_tkn_stk
-    agg_pwrup = base_pool_pwrup + user_pwrup * user_ip_tkn
+    agg_pwrup = base_pool_pwrup  # + user_pwrup * user_ip_tkn
     comp_multiplier = tkn_per_block / agg_pwrup
     user_apr_usd = user_ip_tkn * user_pwrup * comp_multiplier * blocks_per_yr * ipor_prc
     return user_apr_usd
