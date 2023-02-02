@@ -40,7 +40,7 @@ ipusdt_prc = w3f.get_exch_rt(API_KEY, url, scalar, ipUSDT_address, abi)
 ipdai_prc = w3f.get_exch_rt(API_KEY, url, scalar, ipDAI_address, abi)
 
 ## Put Imports and Parameters into Lists and get no. of tokens ##
-ip_prcs = [ipusdc_prc, ipusdt_prc, ipdai_prc]  # Will need to update if add new tokens
+ip_contracts = [ipUSDC_address, ipUSDT_address, ipDAI_address]  # Will need to update if add new tokens
 user_ip_tkns = [user_ipusdc, user_ipusdt, user_ipdai]  # Will need to update if add new tokens
 no_tkns = len(user_ip_tkns)
 
@@ -48,9 +48,11 @@ no_tkns = len(user_ip_tkns)
 pools_df = fn.data_import(lm_stats_url)
 stkd_amts = []
 deleg_amts = []
+ip_prcs = []
 for i, tkn in enumerate(tkns):
     stkd_amts.append(float(pools_df.loc[tkn, 'stakedIpTokenAmount']))
     deleg_amts.append(float(pools_df.loc[tkn, 'delegatedPwIporAmount']))
+    ip_prcs.append(w3f.get_exch_rt(API_KEY, url, scalar, ip_contracts[i], abi))
 ipor_prc = fn.get_price('ipor', 'usd')
 
 ## Optimizer ##
