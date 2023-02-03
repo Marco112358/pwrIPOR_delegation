@@ -166,7 +166,7 @@ def update_output_div(input_value, input_value2, input_value3, input_value4, inp
     ipor_cost = np.multiply(np.subtract(new_pw_tkn, user_pwripor), ipor_prc)
     total_cost = iptokn_cost + ipor_cost
     pwrtk_chng = str(round((new_pw_tkn - user_pwripor), 2))
-    pwripor_final = str(round(user_pwripor, 2))
+    pwripor_final = str(round(new_pw_tkn, 2))
     ipor_cost_final = str(round(ipor_cost, 2))
     ipor_cost_final = str(round(iptokn_cost, 2))
 
