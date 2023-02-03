@@ -125,6 +125,11 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     ipor_cost = np.multiply(np.subtract(new_pw_tkn, user_pwripor), ipor_prc)
     total_cost = iptokn_cost + ipor_cost
 
+    pwrtk_chng = str(round((new_pw_tkn - user_pwripor), 2))
+    pwripor_final = str(round(new_pw_tkn, 2))
+    ipor_cost_final = str(round(ipor_cost, 2))
+    total_cost_final = str(round(total_cost, 2))
+
     print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
     print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
     print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
@@ -142,5 +147,4 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     print('This would cost a total of ' + str(round(total_cost, 2)))
     print('This optimization took ' + str(round(time.time() - start_time, 2)) + ' seconds to run')
 
-    return new_pw_tkn, user_pwripor, user_iptkns_chng, user_iptkns_df, iptokn_cost, user_delegation, user_aprs, \
-           user_tot_aprs, total_cost
+    return pwripor_final, pwrtk_chng, ipor_cost_final, total_cost_final
