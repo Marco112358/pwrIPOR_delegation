@@ -17,8 +17,22 @@ app.layout = html.Div([
     dcc.Input(id='change', value='100.0', type='number'),
     html.Table([
         html.Tr([html.Td('pwrIPOR Change'), html.Td(id='pwrIPOR_chng')]),
+        html.Tr([html.Td('ipUSDC Change'), html.Td(id='ipUSDC_chng')]),
+        html.Tr([html.Td('ipUSDT Change'), html.Td(id='ipUSDT_chng')]),
+        html.Tr([html.Td('ipDAI Change'), html.Td(id='ipDAI_chng')]),
         html.Tr([html.Td('pwrIPOR Total'), html.Td(id='pwrIPOR_total')]),
+        html.Tr([html.Td('ipUSDC Total'), html.Td(id='ipUSDC_total')]),
+        html.Tr([html.Td('ipUSDT Total'), html.Td(id='ipUSDT_total')]),
+        html.Tr([html.Td('ipDAI Total'), html.Td(id='ipDAI_total')]),
+        html.Tr([html.Td('ipUSDC Delegation %'), html.Td(id='ipUSDC_deleg')]),
+        html.Tr([html.Td('ipUSDT Delegation %'), html.Td(id='ipUSDT_deleg')]),
+        html.Tr([html.Td('ipDAI Delegation %'), html.Td(id='ipDAI_deleg')]),
+        html.Tr([html.Td('ipUSDC APR From Emmissions in USD'), html.Td(id='ipUSDC_apr')]),
+        html.Tr([html.Td('ipUSDT APR From Emmissions in USD'), html.Td(id='ipUSDT_apr')]),
+        html.Tr([html.Td('ipDAI APR From Emmissions in USD'), html.Td(id='ipDAI_apr')]),
+        html.Tr([html.Td('Total APR From Emmissions in USD'), html.Td(id='total_apr')]),
         html.Tr([html.Td('pwrIPOR Cost'), html.Td(id='pwrIPOR_cost')]),
+        html.Tr([html.Td('All ipTokens Cost'), html.Td(id='ipTkns_cost')]),
         html.Tr([html.Td('Total Cost'), html.Td(id='total_cost')]),
     ]),
 ])
@@ -26,8 +40,22 @@ app.layout = html.Div([
 
 @app.callback(
     Output('pwrIPOR_chng', 'children'),
+    Output('ipUSDC_chng', 'children'),
+    Output('ipUSDT_chng', 'children'),
+    Output('ipDAI_chng', 'children'),
     Output('pwrIPOR_total', 'children'),
+    Output('ipUSDC_total', 'children'),
+    Output('ipUSDT_total', 'children'),
+    Output('ipDAI_total', 'children'),
+    Output('ipUSDC_deleg', 'children'),
+    Output('ipUSDT_deleg', 'children'),
+    Output('ipDAI_deleg', 'children'),
+    Output('ipUSDC_apr', 'children'),
+    Output('ipUSDT_apr', 'children'),
+    Output('ipDAI_apr', 'children'),
+    Output('total_apr', 'children'),
     Output('pwrIPOR_cost', 'children'),
+    Output('ipTkns_cost', 'children'),
     Output('total_cost', 'children'),
     Input('ipUSDC', 'value'),
     Input('ipUSDT', 'value'),
@@ -42,11 +70,15 @@ def update_output_div(input_value, input_value2, input_value3, input_value4, inp
     user_pwripor = float(input_value4)
     change = float(input_value5)
 
-    pwripor_final, pwrtk_chng, ipor_cost_final, total_cost_final = optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change)
+    pwripor_final, pwrtk_chng, ipor_cost_final, iptkn_cost_final, total_cost_final, ipUSDC_chng, ipUSDT_chng, \
+    ipDAI_chng, ipUSDC_final, ipUSDT_final, ipDAI_final, ipUSDC_deleg, ipUSDT_deleg, ipDAI_deleg, ipUSDC_apr, \
+    ipUSDT_apr, ipDAI_apr, apr_final = optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change)
 
     ## Will have to strip out all of the ip tokens individually
-    return pwrtk_chng, pwripor_final, ipor_cost_final, total_cost_final
+    return pwrtk_chng, ipUSDC_chng, ipUSDT_chng, ipDAI_chng, pwripor_final, ipUSDC_final, ipUSDT_final, ipDAI_final, \
+           ipUSDC_deleg, ipUSDT_deleg, ipDAI_deleg, ipUSDC_apr, ipUSDT_apr, ipDAI_apr, apr_final, ipor_cost_final, \
+           iptkn_cost_final, total_cost_final
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8052)
+    app.run_server(debug=True, port=8051)

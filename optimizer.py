@@ -128,7 +128,21 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     pwrtk_chng = str(round((new_pw_tkn - user_pwripor), 2))
     pwripor_final = str(round(new_pw_tkn, 2))
     ipor_cost_final = str(round(ipor_cost, 2))
+    iptkn_cost_final = str(round(iptokn_cost, 2))
     total_cost_final = str(round(total_cost, 2))
+    ipUSDC_chng = user_iptkns_chng.loc['ipTkn Amounts', 'USDC']
+    ipUSDT_chng = user_iptkns_chng.loc['ipTkn Amounts', 'USDT']
+    ipDAI_chng = user_iptkns_chng.loc['ipTkn Amounts', 'DAI']
+    ipUSDC_final = user_iptkns_df.loc['ipTkn Amounts', 'USDC']
+    ipUSDT_final = user_iptkns_df.loc['ipTkn Amounts', 'USDT']
+    ipDAI_final = user_iptkns_df.loc['ipTkn Amounts', 'DAI']
+    ipUSDC_deleg = user_delegation.loc['pct', 'USDC'] * 100
+    ipUSDT_deleg = user_delegation.loc['pct', 'USDT'] * 100
+    ipDAI_deleg = user_delegation.loc['pct', 'DAI'] * 100
+    ipUSDC_apr = user_aprs.loc['pct', 'USDC']
+    ipUSDT_apr = user_aprs.loc['pct', 'USDT']
+    ipDAI_apr = user_aprs.loc['pct', 'DAI']
+    apr_final = round(user_tot_aprs, 2)
 
     print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
     print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
@@ -147,4 +161,6 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     print('This would cost a total of ' + str(round(total_cost, 2)))
     print('This optimization took ' + str(round(time.time() - start_time, 2)) + ' seconds to run')
 
-    return pwripor_final, pwrtk_chng, ipor_cost_final, total_cost_final
+    return pwripor_final, pwrtk_chng, ipor_cost_final, iptkn_cost_final, total_cost_final, ipUSDC_chng, ipUSDT_chng, \
+           ipDAI_chng, ipUSDC_final, ipUSDT_final, ipDAI_final, ipUSDC_deleg, ipUSDT_deleg, ipDAI_deleg, ipUSDC_apr, \
+           ipUSDT_apr, ipDAI_apr, apr_final
