@@ -1,20 +1,26 @@
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
 from optimizer import optimizer
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     " Input ipUSDC Amount ",
     dcc.Input(id='ipUSDC', value='0.01', type='number'),
+    html.Br(),
     " Input ipUSDT Amount ",
     dcc.Input(id='ipUSDT', value='0.01', type='number'),
+    html.Br(),
     " Input ipDAI Amount ",
     dcc.Input(id='ipDAI', value='0.01', type='number'),
+    html.Br(),
     " Input pwrIPOR Amount ",
     dcc.Input(id='pwrIPOR', value='0.01', type='number'),
+    html.Br(),
     " Input USDC to buy/sell ",
     dcc.Input(id='change', value='100.0', type='number'),
+    html.Br(),
     html.Table([
         html.Tr([html.Td('pwrIPOR Change'), html.Td(id='pwrIPOR_chng')]),
         html.Tr([html.Td('ipUSDC Change'), html.Td(id='ipUSDC_chng')]),
@@ -81,4 +87,4 @@ def update_output_div(input_value, input_value2, input_value3, input_value4, inp
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8051)
+    app.run_server(debug=False, port=8051)

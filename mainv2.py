@@ -8,11 +8,11 @@ import web3_functions as w3f
 start_time = time.time()
 
 ## USER Parameters ##
-user_ipusdc = 0.01
-user_ipusdt = 1000.0
-user_ipdai = 500.0
-user_pwripor = 250
-change = 1000.0
+user_ipusdc = 1000
+user_ipusdt = 0
+user_ipdai = 250
+user_pwripor = 500
+change = 1000
 
 ## Global Parameters ##
 vrt_shft = 1.0

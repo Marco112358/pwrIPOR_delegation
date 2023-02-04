@@ -130,35 +130,35 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     ipor_cost_final = str(round(ipor_cost, 2))
     iptkn_cost_final = str(round(iptokn_cost, 2))
     total_cost_final = str(round(total_cost, 2))
-    ipUSDC_chng = user_iptkns_chng.loc['ipTkn Amounts', 'USDC']
-    ipUSDT_chng = user_iptkns_chng.loc['ipTkn Amounts', 'USDT']
-    ipDAI_chng = user_iptkns_chng.loc['ipTkn Amounts', 'DAI']
-    ipUSDC_final = user_iptkns_df.loc['ipTkn Amounts', 'USDC']
-    ipUSDT_final = user_iptkns_df.loc['ipTkn Amounts', 'USDT']
-    ipDAI_final = user_iptkns_df.loc['ipTkn Amounts', 'DAI']
-    ipUSDC_deleg = user_delegation.loc['pct', 'USDC'] * 100
-    ipUSDT_deleg = user_delegation.loc['pct', 'USDT'] * 100
-    ipDAI_deleg = user_delegation.loc['pct', 'DAI'] * 100
-    ipUSDC_apr = user_aprs.loc['pct', 'USDC']
-    ipUSDT_apr = user_aprs.loc['pct', 'USDT']
-    ipDAI_apr = user_aprs.loc['pct', 'DAI']
+    ipUSDC_chng = round(user_iptkns_chng.loc['ipTkn Amounts', 'USDC'], 2)
+    ipUSDT_chng = round(user_iptkns_chng.loc['ipTkn Amounts', 'USDT'], 2)
+    ipDAI_chng = round(user_iptkns_chng.loc['ipTkn Amounts', 'DAI'], 2)
+    ipUSDC_final = round(user_iptkns_df.loc['ipTkn Amounts', 'USDC'], 2)
+    ipUSDT_final = round(user_iptkns_df.loc['ipTkn Amounts', 'USDT'], 2)
+    ipDAI_final = round(user_iptkns_df.loc['ipTkn Amounts', 'DAI'], 2)
+    ipUSDC_deleg = round(user_delegation.loc['pct', 'USDC'] * 100, 4)
+    ipUSDT_deleg = round(user_delegation.loc['pct', 'USDT'] * 100, 4)
+    ipDAI_deleg = round(user_delegation.loc['pct', 'DAI'] * 100, 4)
+    ipUSDC_apr = round(user_aprs.loc['pct', 'USDC'], 2)
+    ipUSDT_apr = round(user_aprs.loc['pct', 'USDT'], 2)
+    ipDAI_apr = round(user_aprs.loc['pct', 'DAI'], 2)
     apr_final = round(user_tot_aprs, 2)
 
-    print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
-    print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
-    print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
-    print('You should buy/sell the following amounts of ipTokens')
-    print(user_iptkns_chng)
-    print('For a total amout of ipTkns')
-    print(user_iptkns_df)
-    print('Cost to purchase these ipTokens is ' + str(round(iptokn_cost, 2)))
-    print('You should allocate your pwrIPOR tokens using this delegation strategy:')
-    print(user_delegation)
-    print('This would give you the following expected aprs in USD')
-    print(user_aprs)
-    print('With the total apr in USD across all staking pools of:')
-    print(round(user_tot_aprs, 2))
-    print('This would cost a total of ' + str(round(total_cost, 2)))
+    # print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
+    # print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
+    # print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
+    # print('You should buy/sell the following amounts of ipTokens')
+    # print(user_iptkns_chng)
+    # print('For a total amout of ipTkns')
+    # print(user_iptkns_df)
+    # print('Cost to purchase these ipTokens is ' + str(round(iptokn_cost, 2)))
+    # print('You should allocate your pwrIPOR tokens using this delegation strategy:')
+    # print(user_delegation)
+    # print('This would give you the following expected aprs in USD')
+    # print(user_aprs)
+    # print('With the total apr in USD across all staking pools of:')
+    # print(round(user_tot_aprs, 2))
+    # print('This would cost a total of ' + str(round(total_cost, 2)))
     print('This optimization took ' + str(round(time.time() - start_time, 2)) + ' seconds to run')
 
     return pwripor_final, pwrtk_chng, ipor_cost_final, iptkn_cost_final, total_cost_final, ipUSDC_chng, ipUSDT_chng, \
