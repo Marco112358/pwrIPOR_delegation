@@ -1,6 +1,6 @@
 from dash import Dash, dcc, html
 from dash.dependencies import Input, Output
-from optimizer import optimizer
+from optimizer_as_function import optimizer
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = Dash(__name__, external_stylesheets=external_stylesheets)
