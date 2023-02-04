@@ -87,4 +87,4 @@ def update_output_div(input_value, input_value2, input_value3, input_value4, inp
 
 
 if __name__ == '__main__':
-    app.run_server(debug=False, port=8051)
+    app.run_server(debug=False)  # , port=8051)
