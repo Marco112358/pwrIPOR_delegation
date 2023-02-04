@@ -1,16 +1,5 @@
 from web3 import Web3
 
-
-def get_exch_rt(API_KEY="19817a3526604af0aff145aada226a17",
-                url="https://mainnet.infura.io/v3/19817a3526604af0aff145aada226a17", scalar=1000000000000000000,
-                address=None, abi=None):
-    w3 = Web3(Web3.HTTPProvider(url))
-    # Get abi from etherscan > contract > code > scroll down to Contract ABI section and copy
-    contract = w3.eth.contract(address=address, abi=abi)
-    exch_rt = contract.functions.calculateExchangeRate().call() / scalar
-    return exch_rt
-
-
 # Eth Mainnet Parameters
 scalar = 1000000000000000000
 

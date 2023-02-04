@@ -18,7 +18,7 @@ app.layout = html.Div([
     " Input pwrIPOR Amount ",
     dcc.Input(id='pwrIPOR', value='0.01', type='number'),
     html.Br(),
-    " Input USDC to buy/sell ",
+    " Input USD to buy/sell ",
     dcc.Input(id='change', value='100.0', type='number'),
     html.Br(),
     html.Table([

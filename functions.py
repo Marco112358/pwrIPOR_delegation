@@ -3,6 +3,7 @@ import pandas as pd
 from datetime import datetime
 import math
 import requests
+from web3 import Web3
 
 
 def cg_pull(ticker='btc', curr='usd', days='max', intv='daily'):
@@ -43,3 +44,13 @@ def data_import(url='https://api.ipor.io/monitor/liquidity-mining-statistics'):
     pools_df = pd.DataFrame(data=pools_list, columns=['ipToken', 'delegatedPwIporAmount', 'stakedIpTokenAmount'])
     pools_df = pools_df.set_index('ipToken', drop=True)
     return pools_df
+
+
+def get_exch_rt(API_KEY="19817a3526604af0aff145aada226a17",
+                url="https://mainnet.infura.io/v3/19817a3526604af0aff145aada226a17", scalar=1000000000000000000,
+                address=None, abi=None):
+    w3 = Web3(Web3.HTTPProvider(url))
+    # Get abi from etherscan > contract > code > scroll down to Contract ABI section and copy
+    contract = w3.eth.contract(address=address, abi=abi)
+    exch_rt = contract.functions.calculateExchangeRate().call() / scalar
+    return exch_rt

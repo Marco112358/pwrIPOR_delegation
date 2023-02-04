@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
 import time
-import web3_functions as w3f
 
 
 def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
@@ -44,7 +43,7 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
         stkd_amts.append(float(pools_df.loc[tkn, 'stakedIpTokenAmount']))
         deleg_amts.append(float(pools_df.loc[tkn, 'delegatedPwIporAmount']))
         ## Pull ipToken exchange rates from the Liquidity Pool Contracts (Joseph)
-        ip_prcs.append(w3f.get_exch_rt(API_KEY, url, scalar, ip_contracts[i], abi))
+        ip_prcs.append(fn.get_exch_rt(API_KEY, url, scalar, ip_contracts[i], abi))
     ipor_prc = fn.get_price('ipor', 'usd')
 
     ## Optimizer ##
@@ -136,29 +135,14 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     ipUSDC_final = round(user_iptkns_df.loc['ipTkn Amounts', 'USDC'], 2)
     ipUSDT_final = round(user_iptkns_df.loc['ipTkn Amounts', 'USDT'], 2)
     ipDAI_final = round(user_iptkns_df.loc['ipTkn Amounts', 'DAI'], 2)
-    ipUSDC_deleg = round(user_delegation.loc['pct', 'USDC'] * 100, 4)
-    ipUSDT_deleg = round(user_delegation.loc['pct', 'USDT'] * 100, 4)
-    ipDAI_deleg = round(user_delegation.loc['pct', 'DAI'] * 100, 4)
+    ipUSDC_deleg = round(user_delegation.loc['pct', 'USDC'] * 100, 2)
+    ipUSDT_deleg = round(user_delegation.loc['pct', 'USDT'] * 100, 2)
+    ipDAI_deleg = round(user_delegation.loc['pct', 'DAI'] * 100, 2)
     ipUSDC_apr = round(user_aprs.loc['pct', 'USDC'], 2)
     ipUSDT_apr = round(user_aprs.loc['pct', 'USDT'], 2)
     ipDAI_apr = round(user_aprs.loc['pct', 'DAI'], 2)
     apr_final = round(user_tot_aprs, 2)
 
-    # print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
-    # print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
-    # print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
-    # print('You should buy/sell the following amounts of ipTokens')
-    # print(user_iptkns_chng)
-    # print('For a total amout of ipTkns')
-    # print(user_iptkns_df)
-    # print('Cost to purchase these ipTokens is ' + str(round(iptokn_cost, 2)))
-    # print('You should allocate your pwrIPOR tokens using this delegation strategy:')
-    # print(user_delegation)
-    # print('This would give you the following expected aprs in USD')
-    # print(user_aprs)
-    # print('With the total apr in USD across all staking pools of:')
-    # print(round(user_tot_aprs, 2))
-    # print('This would cost a total of ' + str(round(total_cost, 2)))
     print('This optimization took ' + str(round(time.time() - start_time, 2)) + ' seconds to run')
 
     return pwripor_final, pwrtk_chng, ipor_cost_final, iptkn_cost_final, total_cost_final, ipUSDC_chng, ipUSDT_chng, \

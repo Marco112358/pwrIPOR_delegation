@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
 import time
-import web3_functions as w3f
 
 start_time = time.time()
 
@@ -49,7 +48,7 @@ for i, tkn in enumerate(tkns):
     stkd_amts.append(float(pools_df.loc[tkn, 'stakedIpTokenAmount']))
     deleg_amts.append(float(pools_df.loc[tkn, 'delegatedPwIporAmount']))
     ## Pull ipToken exchange rates from the Liquidity Pool Contracts (Joseph)
-    ip_prcs.append(w3f.get_exch_rt(API_KEY, url, scalar, ip_contracts[i], abi))
+    ip_prcs.append(fn.get_exch_rt(API_KEY, url, scalar, ip_contracts[i], abi))
 ipor_prc = fn.get_price('ipor', 'usd')
 
 ## Optimizer ##
