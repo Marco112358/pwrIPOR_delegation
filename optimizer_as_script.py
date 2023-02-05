@@ -11,7 +11,7 @@ user_ipusdc = 1000
 user_ipusdt = 0
 user_ipdai = 250
 user_pwripor = 500
-change = 1000
+change = -1000
 
 ## Global Parameters ##
 vrt_shft = 1.0
@@ -90,11 +90,14 @@ x0 = pwr_pct0 + ip_tkns0 + pw_tkn0
 b1 = (0, 1)
 bnds = [b1, b1, b1]
 for t in np.arange(0, no_tkns):
-    b = (min(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t])),
+    b = (max(0, min(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t]))),
          max(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t])))
+    # b = (0, user_ip_tkns[t] + (change / ip_prcs[t]))
     bnds.append(b)
 
-b = (min(user_pwripor, user_pwripor + (change / ipor_prc)), max(user_pwripor, user_pwripor + (change / ipor_prc)))
+b = (max(0, min(user_pwripor, user_pwripor + (change / ipor_prc))),
+     max(user_pwripor, user_pwripor + (change / ipor_prc)))
+# b = (0, user_pwripor + (change / ipor_prc))
 bnds.append(b)
 
 con1 = {'type': 'ineq', 'fun': constraint1}
@@ -133,13 +136,13 @@ ipor_cost = np.multiply(np.subtract(new_pw_tkn, user_pwripor), ipor_prc)
 total_cost = iptokn_cost + ipor_cost
 
 print('You should buy/sell ' + str(round((new_pw_tkn - user_pwripor), 2)) + ' more pwrIPOR')
-print('For a total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
-print('Cost to purchase these pwrIPOR is ' + str(round(ipor_cost, 2)))
+print('For a final total of ' + str(round(new_pw_tkn, 2)) + ' pwrIPOR')
+print('Cost to purchase (or amount received) pwrIPOR is ' + str(round(ipor_cost, 2)))
 print('You should buy/sell the following amounts of ipTokens')
 print(user_iptkns_chng)
-print('For a total amout of ipTkns')
+print('For a final total amount of ipTkns')
 print(user_iptkns_df)
-print('Cost to purchase these ipTokens is ' + str(round(iptokn_cost, 2)))
+print('Cost to purchase (or amount received)  ipTokens is ' + str(round(iptokn_cost, 2)))
 print('You should allocate your pwrIPOR tokens using this delegation strategy:')
 print(user_delegation)
 print('This would give you the following expected aprs in USD')

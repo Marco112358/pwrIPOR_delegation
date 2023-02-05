@@ -82,11 +82,14 @@ def optimizer(user_ipusdc, user_ipusdt, user_ipdai, user_pwripor, change):
     b1 = (0, 1)
     bnds = [b1, b1, b1]
     for t in np.arange(0, no_tkns):
-        b = (min(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t])),
+        b = (max(0, min(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t]))),
              max(user_ip_tkns[t], user_ip_tkns[t] + (change / ip_prcs[t])))
+        # b = (0, user_ip_tkns[t] + (change / ip_prcs[t]))
         bnds.append(b)
 
-    b = (min(user_pwripor, user_pwripor + (change / ipor_prc)), max(user_pwripor, user_pwripor + (change / ipor_prc)))
+    b = (max(0, min(user_pwripor, user_pwripor + (change / ipor_prc))),
+         max(user_pwripor, user_pwripor + (change / ipor_prc)))
+    # b = (0, user_pwripor + (change / ipor_prc))
     bnds.append(b)
 
     con1 = {'type': 'ineq', 'fun': constraint1}
