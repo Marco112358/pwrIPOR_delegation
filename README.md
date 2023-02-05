@@ -4,7 +4,7 @@ This repo helps people figure out 2 things:
 1. If I have pwrIPOR and multiple different staked ipTokens, what percentage should I delegate my pwrIPOR to each staked ipToken?
 2. If I want to add or remove money from my pwrIPOR or staked ipTokens, how can I do it to maximize my APR?
 
-When you run the 'main.py' file, a locally hosted Dash gets created as the front end.
+When you run the 'main.py' file, a locally hosted Dash gets created as the front end. Some calculations take time, this is an optimizer that needs to run, just wait for the page to update.
 There are 5 parameters you can edit.
  
 1. Input ipUSDC Amount - this is the current amount of ipUSDC you own and stake (or are planning on staking) to IPOR's Liquidity Mining Program
