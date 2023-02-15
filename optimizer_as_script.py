@@ -14,10 +14,11 @@ user_pwripor = 500
 change = -1000
 
 ## Global Parameters ##
-vrt_shft = 1.0
+vrt_shft = 1.4
 base_boost = 0.4
 log_base = 2.0
 horz_shft = 0.5
+ratio_scalar = 2.0
 tkn_per_block = 0.5
 blocks_per_yr = 365 * 24 * 60 * 60 / 12
 lm_stats_url = 'https://api.ipor.io/monitor/liquidity-mining-statistics'
@@ -65,7 +66,7 @@ def objective(x, sign=-1.0):
             apr = 0.0
         else:
             apr = fn.staking_pool(new_stkd_amts[t], new_pwripor_list[t], ipor_prc, vrt_shft, base_boost, log_base,
-                                  horz_shft, tkn_per_block, blocks_per_yr, ip_tkns[t], user_pwripor_list[t])
+                                  horz_shft, tkn_per_block, blocks_per_yr, ip_tkns[t], user_pwripor_list[t], ratio_scalar)
         user_apr.append(apr)
     return sign * np.sum([user_apr])
 
@@ -118,7 +119,7 @@ for t in np.arange(0, no_tkns):
         apr = 0.0
     else:
         apr = fn.staking_pool(new_stkd_amts[t], new_pwripor_list[t], ipor_prc, vrt_shft, base_boost, log_base,
-                              horz_shft, tkn_per_block, blocks_per_yr, new_ip_tkns[t], user_pwripor_list[t])
+                              horz_shft, tkn_per_block, blocks_per_yr, new_ip_tkns[t], user_pwripor_list[t], ratio_scalar)
     user_apr_list.append(apr)
 
 ## Format the Tables for output and print

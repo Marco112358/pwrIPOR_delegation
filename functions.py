@@ -26,9 +26,10 @@ def get_price(ticker='ipor', curr='usd', days='max', intv='daily'):
 
 
 def staking_pool(ip_tkn_stk=None, pwripor_stk=None, ipor_prc=None, vrt_shft=1.0, base_boost=0.4, log_base=2.0,
-                 horz_shft=0.5, tkn_per_block=0.5, blocks_per_yr=2628000.0, user_ip_tkn=1.0, user_pwripor=1.0):
-    user_pwrup = vrt_shft + base_boost + math.log(horz_shft + (user_pwripor / user_ip_tkn), log_base)
-    pool_base_pwrup = vrt_shft + base_boost + math.log(horz_shft + (pwripor_stk / ip_tkn_stk), log_base)
+                 horz_shft=0.5, tkn_per_block=0.5, blocks_per_yr=2628000.0, user_ip_tkn=1.0, user_pwripor=1.0,
+                 ratio_scalar=2.0):
+    user_pwrup = vrt_shft + base_boost + math.log(horz_shft + (ratio_scalar * (user_pwripor / user_ip_tkn)), log_base)
+    pool_base_pwrup = vrt_shft + base_boost + math.log(horz_shft + (ratio_scalar * (pwripor_stk / ip_tkn_stk)), log_base)
     base_pool_pwrup = pool_base_pwrup * ip_tkn_stk
     agg_pwrup = base_pool_pwrup  # + user_pwrup * user_ip_tkn
     comp_multiplier = tkn_per_block / agg_pwrup
