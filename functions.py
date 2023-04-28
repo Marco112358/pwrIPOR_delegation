@@ -25,10 +25,34 @@ def get_price(ticker='ipor', curr='usd', days='max', intv='daily'):
     return val
 
 
+def first_curve(ratio=0.01):
+    if 0.0 < ratio <= 0.01:
+        a = 10
+        b = 0.2
+    elif 0.01 < ratio <= 0.02:
+        a = 4
+        b = 0.26
+    elif 0.02 < ratio <= 0.03:
+        a = 3
+        b = 0.28
+    elif 0.03 < ratio <= 0.04:
+        a = 2
+        b = 0.31
+    else:
+        a = 1
+        b= 0.35
+    powerup = b + a * ratio
+    return powerup
+
+
 def staking_pool(ip_tkn_stk=None, pwripor_stk=None, ipor_prc=None, vrt_shft=1.0, base_boost=0.4, log_base=2.0,
                  horz_shft=0.5, tkn_per_block=0.5, blocks_per_yr=2628000.0, user_ip_tkn=1.0, user_pwripor=1.0,
                  ratio_scalar=2.0):
-    user_pwrup = vrt_shft + base_boost + math.log(horz_shft + (ratio_scalar * (user_pwripor / user_ip_tkn)), log_base)
+    if (user_pwripor / user_ip_tkn) < 0.05:
+        user_pwrup = first_curve((user_pwripor / user_ip_tkn))
+    else:
+        user_pwrup = vrt_shft + base_boost + math.log(horz_shft +
+                                                      (ratio_scalar * (user_pwripor / user_ip_tkn)), log_base)
     pool_base_pwrup = vrt_shft + base_boost + math.log(horz_shft + (ratio_scalar * (pwripor_stk / ip_tkn_stk)), log_base)
     base_pool_pwrup = pool_base_pwrup * ip_tkn_stk
     agg_pwrup = base_pool_pwrup  # + user_pwrup * user_ip_tkn

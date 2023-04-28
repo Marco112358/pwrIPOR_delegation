@@ -9,9 +9,9 @@ start_time = time.time()
 ## USER Parameters ##
 user_ipusdc = 1000
 user_ipusdt = 0
-user_ipdai = 250
+user_ipdai = 0
 user_pwripor = 500
-change = -1000
+change = 0
 
 ## Global Parameters ##
 vrt_shft = 1.4
@@ -19,7 +19,7 @@ base_boost = 0.4
 log_base = 2.0
 horz_shft = 0.5
 ratio_scalar = 2.0
-tkn_per_block = 0.5
+tkn_per_block = 0.35
 blocks_per_yr = 365 * 24 * 60 * 60 / 12
 lm_stats_url = 'https://api.ipor.io/monitor/liquidity-mining-statistics'
 tkns = ['ipUSDC', 'ipUSDT', 'ipDAI']
